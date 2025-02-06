@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>safenet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+</head>
+<body class = "min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-md fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="/" class="flex items-center space-x-2  group">
+                    <span class="text-3xl"><i class="fas fa-paw transform group-hover:rotate-12 transition-transform"></i></span>
+                    <span class="text-2xl font-bold ">SafeNet</span>
+                </a>
+    
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex items-center space-x-8" id="dynamic-nav">
+                        <a href="/" class="nav-link text-gray-600 ">Home</a>
+                        <a href="/block" class="nav-link text-gray-600 ">Block</a>
+                        <a href="/login" class="font-semibold  px-4 py-2 rounded-lg ">Login</a>
+                        <a href="/signup" class="px-6 py-2 rounded-lg font-semibold shadow-md ">
+                            Sign Up
+                        </a>
+           
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Content Block -->
+    <main class="flex-grow">
+        {% block body %}
+        <!-- Individual page content will be injected here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+
+</body>
+
+</html>
