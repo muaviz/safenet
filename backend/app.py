@@ -1,24 +1,38 @@
 from flask import Flask, render_template, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS  # Allow cross-origin requests (for extension)
+import json
+import os
 
 # Initialize Flask app
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})  # Enable CORS for all routes
 
-# Configure SQLite database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
+# Define blocklist file
+BLOCKLIST_FILE = "blocklist.json"
 
-# Define database model for blocked sites
-class BlockedSite(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    url = db.Column(db.String(255), unique=True, nullable=False)
+# Ensure blocklist file exists
+if not os.path.exists(BLOCKLIST_FILE):
+    with open(BLOCKLIST_FILE, "w") as file:
+        json.dump({"blocked_sites": []}, file)
 
-# Create tables
-with app.app_context():
-    db.create_all()
+# --------- Utility Functions ---------
+def load_blocklist():
+    """Load blocklist from JSON file."""
+    if not os.path.exists(BLOCKLIST_FILE):  # Create file if it doesn't exist
+        save_blocklist([])  # Initialize an empty blocklist
+    with open(BLOCKLIST_FILE, "r") as file:
+        return json.load(file).get("blocked_sites", [])
+
+def save_blocklist(blocklist):
+    """Save blocklist to JSON file."""
+    try:
+        with open(BLOCKLIST_FILE, "w") as file:
+            json.dump({"blocked_sites": blocklist}, file, indent=4)
+        print("✅ Blocklist successfully saved")  # Debugging
+    except Exception as e:
+        print(f"❌ Error saving blocklist: {e}")  # Debugging
+
+
 
 # --------- Existing Routes ---------
 @app.route("/")
@@ -42,25 +56,30 @@ def signup():
 @app.route("/blocklist", methods=["GET"])
 def get_blocklist():
     """Return the list of blocked sites."""
-    blocked_sites = BlockedSite.query.all()
-    return jsonify({"blocked_sites": [site.url for site in blocked_sites]}), 200
+    return jsonify({"blocked_sites": load_blocklist()}), 200
 
 @app.route("/blocklist", methods=["POST"])
 def add_to_blocklist():
-    """Add a site to the blocklist."""
+    """Add a site to the blocklist and save to JSON."""
     data = request.json
     new_url = data.get("url")
 
-    if new_url:
-        if BlockedSite.query.filter_by(url=new_url).first():
-            return jsonify({"message": "Site already blocked"}), 400
+    if not new_url:
+        print("⚠️ Invalid request: No URL provided")  # Debugging
+        return jsonify({"error": "Invalid request"}), 400
 
-        new_site = BlockedSite(url=new_url)
-        db.session.add(new_site)
-        db.session.commit()
-        return jsonify({"message": "Site blocked successfully"}), 201
-    
-    return jsonify({"error": "Invalid request"}), 400
+    blocklist = load_blocklist()
+    print(f"🔍 Current Blocklist: {blocklist}")  # Debugging
+
+    if new_url in blocklist:
+        print("⚠️ Site already blocked")  # Debugging
+        return jsonify({"message": "Site already blocked"}), 400
+
+    blocklist.append(new_url)
+    save_blocklist(blocklist)
+    print(f"✅ Site blocked: {new_url}")  # Debugging
+    return jsonify({"message": "Site blocked successfully"}), 201
+
 
 @app.route("/blocklist", methods=["DELETE"])
 def remove_from_blocklist():
@@ -69,10 +88,10 @@ def remove_from_blocklist():
     url_to_remove = data.get("url")
 
     if url_to_remove:
-        site = BlockedSite.query.filter_by(url=url_to_remove).first()
-        if site:
-            db.session.delete(site)
-            db.session.commit()
+        blocklist = load_blocklist()
+        if url_to_remove in blocklist:
+            blocklist.remove(url_to_remove)
+            save_blocklist(blocklist)
             return jsonify({"message": "Site removed from blocklist"}), 200
         return jsonify({"error": "Site not found"}), 404
 
@@ -94,7 +113,6 @@ def log_visit():
     except Exception as e:
         print("Error logging visit:", str(e))
         return jsonify({"error": "Internal server error"}), 500
-
 
 # Run the Flask app
 if __name__ == "__main__":

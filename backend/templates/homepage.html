@@ -68,9 +68,9 @@
                     </svg>
                     <h6 class="text-xl font-semibold text-gray-800">Block Websites</h6>
                 </div>
-                <form id="block-website-form" class="space-y-4">
+                <form id="block-website-form" onsubmit="return false;" class="space-y-4">
                     <div class="relative">
-                        <input type="text" class="w-full px-4 py-3 rounded-lg border-2 border-purple-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all text-gray-700 bg-white/90" id="website-url" placeholder="Enter website URL">
+                        <input type="text" id="website-url" name="website-url" placeholder="Enter website URL" class="w-full px-4 py-3 rounded-lg border-2 border-purple-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all text-gray-700 bg-white/90" id="website-url" placeholder="Enter website URL">
                     </div>
                     <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         Add Website
