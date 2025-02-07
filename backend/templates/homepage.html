@@ -13,27 +13,49 @@
         <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 relative overflow-hidden animate-fade-in">
             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-transparent rounded-full -mr-16 -mt-16 opacity-50"></div>
             <div class="relative">
-                <div class="flex items-center space-x-3 mb-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                
+                <!-- Screen Time -->
+<div class="bg-white/90 p-8 rounded-xl shadow-lg">
+    <div class="flex items-center mb-8">
+        <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="text-xl font-semibold">Screen Time</h2>
+    </div>
+    <div class="overflow-hidden" id="gaugeContainer">
+        <div class="flex transition-transform duration-300" id="gaugeSlider">
+            <div class="min-w-full flex-shrink-0">
+                <div class="relative w-48 h-48 mx-auto">
+                    <svg class="transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" class="stroke-gray-200" fill="none" stroke-width="10"/>
+                        <circle id="gauge1" cx="50" cy="50" r="45" class="stroke-blue-500" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="282.7" stroke-dashoffset="282.7"/>
                     </svg>
-                    <h6 class="text-xl font-semibold text-gray-800">Screen Time Consumed</h6>
-                </div>
-                <div class="flex justify-center items-center">
-                    <div class="relative">
-                        <svg class="gauge-svg transform -rotate-90" width="180" height="180" viewBox="0 0 100 100">
-                            <defs>
-                                <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                    <stop offset="0%" style="stop-color:#3B82F6" />
-                                    <stop offset="100%" style="stop-color:#60A5FA" />
-                                </linearGradient>
-                            </defs>
-                            <circle class="gauge-circle" cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="8" fill="none"/>
-                            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="url(#gaugeGradient)" stroke-width="8" stroke-linecap="round" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
-                        </svg>
-                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-blue-600" id="gaugeValue">0%</div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="value1" class="text-3xl font-bold text-blue-500">0%</span>
                     </div>
                 </div>
+                <p class="text-center mt-4 font-medium">Child 1</p>
+            </div>
+            <div class="min-w-full flex-shrink-0">
+                <div class="relative w-48 h-48 mx-auto">
+                    <svg class="transform -rotate-90" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" class="stroke-gray-200" fill="none" stroke-width="10"/>
+                        <circle id="gauge2" cx="50" cy="50" r="45" class="stroke-purple-500" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="282.7" stroke-dashoffset="282.7"/>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span id="value2" class="text-3xl font-bold text-purple-500">0%</span>
+                    </div>
+                </div>
+                <p class="text-center mt-4 font-medium">Child 2</p>
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-6 space-x-2">
+        <button class="w-2 h-2 rounded-full bg-blue-500" data-dot="0"></button>
+        <button class="w-2 h-2 rounded-full bg-gray-300" data-dot="1"></button>
+    </div>
+</div>
+
             </div>
         </div>
 
@@ -224,5 +246,95 @@
             });
         }
     });
+
+// Gauge Animation
+const gauges = {
+    gauge1: { el: document.getElementById('gauge1'), value: document.getElementById('value1'), target: 75 },
+    gauge2: { el: document.getElementById('gauge2'), value: document.getElementById('value2'), target: 45 }
+};
+
+function animateGauge(id) {
+    const gauge = gauges[id];
+    const circumference = 282.7;
+    const offset = circumference - (gauge.target / 100) * circumference;
+    gauge.el.style.transition = 'stroke-dashoffset 1s ease-in-out';
+    gauge.el.style.strokeDashoffset = offset;
+    gauge.value.textContent = `${gauge.target}%`;
+}
+
+// Initialize gauges
+setTimeout(() => {
+    Object.keys(gauges).forEach(animateGauge);
+}, 300);
+
+// Swipe Functionality
+const container = document.getElementById('gaugeContainer');
+const slider = document.getElementById('gaugeSlider');
+const dots = document.querySelectorAll('[data-dot]');
+let currentSlide = 0;
+let startX, moveX;
+
+container.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    slider.style.transition = 'none';
+});
+
+container.addEventListener('touchmove', e => {
+    if (!startX) return;
+    moveX = e.touches[0].clientX;
+    const diff = moveX - startX;
+    const translate = -currentSlide * 100 + (diff / container.offsetWidth) * 100;
+    slider.style.transform = `translateX(${translate}%)`;
+});
+
+container.addEventListener('touchend', e => {
+    if (!startX || !moveX) return;
+    const diff = moveX - startX;
+    
+    slider.style.transition = 'transform 300ms ease-out';
+    if (Math.abs(diff) > container.offsetWidth / 3) {
+        currentSlide = diff > 0 ? Math.max(currentSlide - 1, 0) : Math.min(currentSlide + 1, 1);
+    }
+    updateSlider();
+    startX = moveX = null;
+});
+
+dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+        currentSlide = parseInt(dot.dataset.dot);
+        updateSlider();
+    });
+});
+
+function updateSlider() {
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    dots.forEach((dot, i) => {
+        dot.classList.toggle('bg-blue-500', i === currentSlide);
+        dot.classList.toggle('bg-gray-300', i !== currentSlide);
+    });
+}
+
+// Website Blocking
+document.getElementById('blockForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const input = e.target.querySelector('input');
+    if (!input.value) return;
+
+    const div = document.createElement('div');
+    div.className = 'flex items-center justify-between p-4 bg-gray-50 rounded-lg';
+    div.innerHTML = `
+        <span class="text-gray-700">${input.value}</span>
+        <button class="text-gray-400 hover:text-red-500">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"/>
+            </svg>
+        </button>
+    `;
+
+    div.querySelector('button').onclick = () => div.remove();
+    document.getElementById('websiteList').appendChild(div);
+    input.value = '';
+});
+
 </script>
 {% endblock %}
