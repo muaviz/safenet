@@ -1,17 +1,16 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 relative overflow-hidden">
-    <!-- Decorative Background Elements -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 relative overflow-hidden font-['Inter']">
     <div class="absolute inset-0 z-0">
-        <div class="absolute top-0 left-0 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-        <div class="absolute top-0 right-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
-        <div class="absolute -bottom-8 right-20 w-64 h-64 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-6000"></div>
+        <div class="absolute -top-4 -left-4 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+        <div class="absolute top-1/4 right-1/3 w-96 h-96 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float-delayed"></div>
+        <div class="absolute top-1/2 -left-20 w-72 h-72 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float-reverse"></div>
+        <div class="absolute -bottom-8 right-20 w-80 h-80 bg-yellow-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse-slow"></div>
     </div>
 
     <main class="w-full max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 px-4 relative z-10">
-        <!-- Screen Time Card -->
-        <div class="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden">
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 relative overflow-hidden animate-fade-in">
             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-100 to-transparent rounded-full -mr-16 -mt-16 opacity-50"></div>
             <div class="relative">
                 <div class="flex items-center space-x-3 mb-6">
@@ -29,21 +28,16 @@
                                     <stop offset="100%" style="stop-color:#60A5FA" />
                                 </linearGradient>
                             </defs>
-                            <circle class="gauge-circle" cx="50" cy="50" r="40" 
-                                stroke="#E5E7EB" stroke-width="8" fill="none"/>
-                            <circle class="gauge-fill" cx="50" cy="50" r="40" 
-                                stroke="url(#gaugeGradient)" stroke-width="8" stroke-linecap="round" fill="none"
-                                stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
+                            <circle class="gauge-circle" cx="50" cy="50" r="40" stroke="#E5E7EB" stroke-width="8" fill="none"/>
+                            <circle class="gauge-fill" cx="50" cy="50" r="40" stroke="url(#gaugeGradient)" stroke-width="8" stroke-linecap="round" fill="none" stroke-dasharray="251.2" stroke-dashoffset="251.2"/>
                         </svg>
-                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                            text-3xl font-bold text-blue-600" id="gaugeValue">0%</div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-3xl font-bold text-blue-600" id="gaugeValue">0%</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Block Websites Card -->
-        <div class="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 relative overflow-hidden">
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 relative overflow-hidden animate-fade-in-delayed">
             <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-100 to-transparent rounded-full -mr-16 -mt-16 opacity-50"></div>
             <div class="relative">
                 <div class="flex items-center space-x-3 mb-6">
@@ -54,15 +48,9 @@
                 </div>
                 <form id="block-website-form" class="space-y-4">
                     <div class="relative">
-                        <input type="text" 
-                            class="w-full px-4 py-3 rounded-lg border-2 border-purple-100 focus:border-purple-400 
-                            focus:ring-2 focus:ring-purple-200 outline-none transition-all text-gray-700 bg-white/90"
-                            id="website-url" placeholder="Enter website URL">
+                        <input type="text" class="w-full px-4 py-3 rounded-lg border-2 border-purple-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none transition-all text-gray-700 bg-white/90" id="website-url" placeholder="Enter website URL">
                     </div>
-                    <button type="submit" 
-                        class="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold 
-                        py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-200 flex items-center justify-center
-                        shadow-lg hover:shadow-xl">
+                    <button type="submit" class="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white font-semibold py-3 px-4 rounded-lg hover:opacity-90 transition-all duration-300 flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         Add Website
                     </button>
                 </form>
@@ -70,8 +58,7 @@
             </div>
         </div>
 
-        <!-- Family Activities Card (Full Width) -->
-        <div class="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 md:col-span-2 relative overflow-hidden">
+        <div class="bg-white/90 backdrop-blur-md shadow-xl rounded-2xl p-8 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 hover:bg-white/95 md:col-span-2 relative overflow-hidden animate-fade-in-more-delayed">
             <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-100 to-transparent rounded-full -mr-48 -mt-48 opacity-50"></div>
             <div class="relative">
                 <div class="flex items-center justify-between mb-8">
@@ -83,43 +70,40 @@
                     </div>
                 </div>
                 <div class="space-y-6">
-                    <!-- Activity Cards -->
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="p-6 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-6 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="font-semibold text-blue-600">Child 1</span>
                                 <span class="text-blue-500 font-semibold">2h</span>
                             </div>
                             <p class="text-gray-600">YouTube</p>
-                            <div class="mt-4 h-1 bg-blue-200 rounded-full">
-                                <div class="h-1 bg-blue-500 rounded-full" style="width: 75%"></div>
+                            <div class="mt-4 h-1 bg-blue-200 rounded-full overflow-hidden">
+                                <div class="h-1 bg-blue-500 rounded-full transform origin-left animate-progress" style="width: 75%"></div>
                             </div>
                         </div>
-                        <div class="p-6 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-6 rounded-xl bg-gradient-to-r from-purple-50 to-purple-100 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="font-semibold text-purple-600">Child 2</span>
                                 <span class="text-purple-500 font-semibold">1h</span>
                             </div>
                             <p class="text-gray-600">Fortnite</p>
-                            <div class="mt-4 h-1 bg-purple-200 rounded-full">
-                                <div class="h-1 bg-purple-500 rounded-full" style="width: 45%"></div>
+                            <div class="mt-4 h-1 bg-purple-200 rounded-full overflow-hidden">
+                                <div class="h-1 bg-purple-500 rounded-full transform origin-left animate-progress" style="width: 45%"></div>
                             </div>
                         </div>
-                        <div class="p-6 rounded-xl bg-gradient-to-r from-green-50 to-green-100 shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <div class="p-6 rounded-xl bg-gradient-to-r from-green-50 to-green-100 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="font-semibold text-green-600">Parent</span>
                                 <span class="text-green-500 font-semibold">30m</span>
                             </div>
                             <p class="text-gray-600">Reading</p>
-                            <div class="mt-4 h-1 bg-green-200 rounded-full">
-                                <div class="h-1 bg-green-500 rounded-full" style="width: 25%"></div>
+                            <div class="mt-4 h-1 bg-green-200 rounded-full overflow-hidden">
+                                <div class="h-1 bg-green-500 rounded-full transform origin-left animate-progress" style="width: 25%"></div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Add Member Button -->
-                    <a href="/add-member" class="mt-8 inline-flex items-center justify-center w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold 
-                        py-4 px-6 rounded-xl hover:opacity-90 transition-all duration-200 space-x-2 shadow-lg hover:shadow-xl">
+                    <a href="/add-member" class="mt-8 inline-flex items-center justify-center w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold py-4 px-6 rounded-xl hover:opacity-90 transition-all duration-300 space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
@@ -132,27 +116,57 @@
 </div>
 
 <style>
-    @keyframes blob {
-        0% { transform: translate(0px, 0px) scale(1); }
-        33% { transform: translate(30px, -50px) scale(1.1); }
-        66% { transform: translate(-20px, 20px) scale(0.9); }
-        100% { transform: translate(0px, 0px) scale(1); }
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        25% { transform: translate(10px, -15px) scale(1.05); }
+        50% { transform: translate(-5px, 20px) scale(0.95); }
+        75% { transform: translate(-15px, -10px) scale(1.02); }
     }
 
-    .animate-blob {
-        animation: blob 7s infinite;
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .animation-delay-2000 {
+    @keyframes progress {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+
+    .animate-float {
+        animation: float 15s ease-in-out infinite;
+    }
+
+    .animate-float-delayed {
+        animation: float 18s ease-in-out infinite;
         animation-delay: 2s;
     }
 
-    .animation-delay-4000 {
-        animation-delay: 4s;
+    .animate-float-reverse {
+        animation: float 20s ease-in-out infinite reverse;
+        animation-delay: 1s;
     }
 
-    .animation-delay-6000 {
-        animation-delay: 6s;
+    .animate-pulse-slow {
+        animation: pulse 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+    }
+
+    .animate-fade-in-delayed {
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 0.2s;
+    }
+
+    .animate-fade-in-more-delayed {
+        animation: fadeIn 0.8s ease-out forwards;
+        animation-delay: 0.4s;
+    }
+
+    .animate-progress {
+        animation: progress 1s ease-out forwards;
     }
 
     .gauge-fill {
