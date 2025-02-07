@@ -24,7 +24,7 @@ with app.app_context():
 @app.route("/")
 # Hirako neeche homepage.html ko test.html kr dena - isse fir test.html run hoga then app.py wapas run kr dena
 def home():
-    return render_template("test.html")
+    return render_template("homepage.html")
 
 @app.route("/block")
 def block():
