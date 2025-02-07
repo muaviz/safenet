@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="cursor hidden md:block fixed w-5 h-5 border-2 border-blue-600 rounded-full pointer-events-none z-50 transition-transform duration-100 transform -translate-x-1/2 -translate-y-1/2"></div>
+<div class="cursor-dot hidden md:block fixed w-1 h-1 bg-blue-600 rounded-full pointer-events-none z-50 transition-transform duration-150 transform -translate-x-1/2 -translate-y-1/2"></div>
+
+<header class="fixed w-full bg-white bg-opacity-95 backdrop-blur-md py-4 top-0 z-50 shadow-md animate-slideDown">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+        <a href="#" class="text-2xl font-bold text-blue-600 hover:underline">Safenet</a>
+    </div>
+</header>
+
+<section class="hero py-24 bg-gradient-to-br from-blue-100 to-blue-200 relative overflow-hidden">
+    <div class="container mx-auto px-6 grid md:grid-cols-2 gap-8 items-center">
+        <div class="max-w-md animate-fadeInLeft">
+            <h1 class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 mb-4">Protect Your Children Online</h1>
+            <p class="text-gray-600 mb-6">Monitor and manage your children's digital activities with our comprehensive dashboard and real-time analytics.</p>
+            <a href="http://127.0.0.1:5000" class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">Get Started</a>
+        </div>
+        <div class="relative p-5 bg-white rounded-xl shadow-xl animate-float hover:scale-105 transition">
+            <img src="{{ url_for('static', filename='assets/img/homescreen_cropped.png') }}" alt="Safenet Dashboard" class="rounded-lg">
+        </div>
+    </div>
+</section>
+
+<section class="features py-16 bg-white">
+    <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-gray-800 text-center">Key Features</h2>
+        <div class="grid md:grid-cols-3 gap-8 mt-10">
+            <div class="p-6 bg-gray-100 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 text-center">
+                <div class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-lg mb-4 text-2xl">📊</div>
+                <h3 class="text-xl font-semibold">Screen Time Tracking</h3>
+                <p class="text-gray-600 mt-2">Monitor daily device usage and set healthy limits for your children.</p>
+            </div>
+            <div class="p-6 bg-gray-100 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 text-center">
+                <div class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-lg mb-4 text-2xl">🔒</div>
+                <h3 class="text-xl font-semibold">Safe Browsing</h3>
+                <p class="text-gray-600 mt-2">Filter inappropriate content and protect your children from online threats.</p>
+            </div>
+            <div class="p-6 bg-gray-100 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 text-center">
+                <div class="w-12 h-12 bg-blue-600 text-white flex items-center justify-center rounded-lg mb-4 text-2xl">📱</div>
+                <h3 class="text-xl font-semibold">App Management</h3>
+                <p class="text-gray-600 mt-2">Control app usage and receive real-time activity notifications.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const cursor = document.querySelector('.cursor');
+        const cursorDot = document.querySelector('.cursor-dot');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.clientX}px`;
+            cursor.style.top = `${e.clientY}px`;
+            cursorDot.style.left = `${e.clientX}px`;
+            cursorDot.style.top = `${e.clientY}px`;
+        });
+        document.querySelectorAll('a, .feature-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
+                cursor.style.opacity = '0.5';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+                cursor.style.opacity = '1';
+            });
+        });
+    });
+</script>
+{% endblock %}
