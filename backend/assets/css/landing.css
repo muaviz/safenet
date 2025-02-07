@@ -1,0 +1,143 @@
+/* Landing Page - General Styles */
+.landing_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #cfd9ff, #e3efff);
+    transition: background 0.5s ease-in-out;
+  }
+  
+  /* Card Wrapper */
+  .landing_card {
+    width: 100%;
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
+    animation: fade-in 1s ease-in-out;
+  }
+  
+  /* Left Section - Login */
+  .landing_left {
+    background: linear-gradient(to right, #2563eb, #3b82f6);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    transition: all 0.5s ease;
+  }
+  
+  /* Right Section - Signup */
+  .landing_right {
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    transition: all 0.5s ease;
+  }
+  
+  /* Headings */
+  .landing_title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* Subtitle */
+  .landing_subtitle {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 20px;
+  }
+  
+  /* Input Fields */
+  .landing_input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border 0.3s ease;
+  }
+  
+  .landing_input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0px 0px 5px rgba(59, 130, 246, 0.5);
+  }
+  
+  /* Buttons */
+  .landing_button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .landing_button_login {
+    background: white;
+    color: #2563eb;
+  }
+  
+  .landing_button_login:hover {
+    background: #f0f4ff;
+  }
+  
+  .landing_button_signup {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .landing_button_signup:hover {
+    background: #1e40af;
+  }
+  
+  /* Links */
+  .landing_link {
+    font-size: 0.85rem;
+    margin-top: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .landing_link:hover {
+    color: #1e40af;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .landing_card {
+      grid-template-columns: 1fr;
+    }
+    .landing_left,
+    .landing_right {
+      padding: 30px;
+    }
+  }
+  
+  /* Fade-in Animation */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
