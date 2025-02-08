@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
- <a href="https://github.com/deadpoet11/safenet"><img src="https://github.com/hirakoisdead/safenet/blob/main/backend/assets/Safenet.png" alt="SafeNet" width="200"></a> 
+ <a href="https://github.com/deadpoet11/safenet"><img src="https://github.com/deadpoet11/safenet/blob/main/backend/assets/Safenetlogo.png" alt="SafeNet" width="200"></a> 
   <br>
   SafeNet
   <br>
