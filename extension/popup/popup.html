@@ -3,12 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Site Blocker</title>
+    <title>SafeNet Status</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <h2>AI Site Blocker</h2>
-    <button id="refreshBlocklist">Refresh Blocklist</button>
+    <div class="popup-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="brand">
+                <span class="shield-icon">🛡️</span>
+                <span class="brand-name">SafeNet</span>
+            </div>
+            <span id="statusBadge" class="status-badge active">Active</span>
+        </div>
+
+        <!-- Child Profile Info or Unpaired Notice -->
+        <div id="profileSection" class="card">
+            <div class="card-row">
+                <span class="label">Profile</span>
+                <span id="childName" class="value">Standard Protection</span>
+            </div>
+            <div class="card-row">
+                <span class="label">Active Rules</span>
+                <span id="rulesCount" class="value">0 sites</span>
+            </div>
+            <div class="card-row">
+                <span class="label">Last Synced</span>
+                <span id="lastSynced" class="value text-muted">Never</span>
+            </div>
+        </div>
+
+        <!-- Pairing Section (Shown if not paired) -->
+        <div id="pairingSection" class="card hidden">
+            <p class="pairing-title">Pair with Parent Dashboard</p>
+            <p class="pairing-subtitle">Enter the 6-digit code from your parent's dashboard:</p>
+            <div class="pair-input-group">
+                <input type="text" id="pairCodeInput" maxlength="6" placeholder="123456" class="pair-input">
+                <button id="pairBtn" class="btn btn-secondary">Connect</button>
+            </div>
+            <p id="pairFeedback" class="feedback-text"></p>
+        </div>
+
+        <!-- Action Button -->
+        <div class="actions">
+            <button id="refreshBtn" class="btn btn-primary">
+                🔄 Sync Rules Now
+            </button>
+        </div>
+
+        <div id="syncFeedback" class="sync-feedback"></div>
+    </div>
+
     <script src="popup.js"></script>
 </body>
 </html>

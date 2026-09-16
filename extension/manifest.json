@@ -1,24 +1,49 @@
 {
   "manifest_version": 3,
-  "name": "SafeNet",
-  "version": "1.0",
+  "name": "SafeNet - AI Safe Browsing",
+  "version": "1.1.0",
+  "description": "AI-powered safe browsing and parental control solution.",
   "permissions": [
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess",
     "storage",
-    "activeTab"
+    "activeTab",
+    "alarms",
+    "idle",
+    "tabs"
   ],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": [
+    "<all_urls>",
+    "http://localhost:5000/*",
+    "http://127.0.0.1:5000/*"
+  ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup/popup.html"
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["blockPage.html", "output.css", "blockPage.js"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
