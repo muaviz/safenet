@@ -1,84 +1,149 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-100 via-blue-50 to-blue-100 transition-all duration-500 p-4">
-  <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 bg-white shadow-2xl rounded-3xl overflow-hidden animate-fade-in">
+<div class="w-full max-w-5xl mx-auto py-6" x-data="{ tab: 'login' }">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-12 bg-white rounded-3xl shadow-xl border border-slate-200/80 overflow-hidden">
     
-    <!-- Left Side - Login -->
-    <div class="p-12 flex flex-col justify-center items-center bg-gradient-to-br from-blue-500 to-blue-600 text-white transition-all duration-500 relative overflow-hidden">
-      <div class="absolute inset-0 bg-blue-400 opacity-20 transform rotate-45 scale-150"></div>
+    <!-- Left Hero & Features Showcase -->
+    <div class="lg:col-span-5 bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-800 p-8 sm:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+      <!-- Ambient Glow -->
+      <div class="absolute -top-24 -left-24 w-72 h-72 bg-indigo-400/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-72 h-72 bg-purple-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
       <div class="relative z-10">
-        <h2 class="text-3xl font-bold mb-4 transition-transform hover:scale-105">Welcome Back!</h2>
-        <p class="text-sm mb-8 text-blue-100">Login to continue where you left off</p>
-        <form method="POST" action="/" class="w-full max-w-sm space-y-4">
-          <input type="hidden" name="form_type" value="login">
-          <div class="transform transition-all duration-300 hover:-translate-y-1">
-            <input type="email" name="email" placeholder="Email" required 
-              class="w-full p-4 rounded-xl border-2 border-blue-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-indigo-100 text-xs font-semibold mb-6">
+          <span>✨</span>
+          <span>Next-Gen Parental Security</span>
+        </div>
+
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight leading-tight mb-4">
+          Protect what matters most online.
+        </h2>
+        <p class="text-sm text-indigo-100/90 leading-relaxed mb-8">
+          SafeNet safeguards children with real-time AI filtering, smart screen time tracking, and instant parent approval workflows.
+        </p>
+
+        <!-- Feature Points -->
+        <div class="space-y-4">
+          <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-base">🛡️</div>
+            <div>
+              <h4 class="text-xs font-bold text-white">AI Content Guard</h4>
+              <p class="text-xs text-indigo-200">Real-time heuristics and zero-day threat detection.</p>
+            </div>
           </div>
-          <div class="transform transition-all duration-300 hover:-translate-y-1">
-            <input type="password" name="password" placeholder="Password" required 
-              class="w-full p-4 rounded-xl border-2 border-blue-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
+          <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-base">⏱️</div>
+            <div>
+              <h4 class="text-xs font-bold text-white">Foreground Screen Time</h4>
+              <p class="text-xs text-indigo-200">Accurate focus tracking with automatic daily limits.</p>
+            </div>
           </div>
-          <button class="w-full bg-white text-blue-600 font-semibold py-4 px-6 rounded-xl hover:bg-blue-50 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95">
-            Login
-          </button>
-        </form>
+          <div class="flex items-start space-x-3">
+            <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0 text-base">📱</div>
+            <div>
+              <h4 class="text-xs font-bold text-white">Child-Proof Pairing</h4>
+              <p class="text-xs text-indigo-200">6-digit PIN connection without exposing parent credentials.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative z-10 pt-8 mt-8 border-t border-white/10 flex items-center justify-between text-xs text-indigo-200">
+        <span>v1.1.0 Open-Source</span>
+        <span>Cross-Platform Ready</span>
       </div>
     </div>
-    
-    <!-- Right Side - Signup -->
-    <div class="p-12 flex flex-col justify-center items-center bg-gray-50 transition-all duration-500">
-      <h2 class="text-3xl font-bold mb-4 text-blue-600 transition-transform hover:scale-105">Join Safenet Today</h2>
-      <p class="text-sm mb-8 text-gray-600">Create an account and explore new possibilities</p>
-      <form method="POST" action="/" class="w-full max-w-sm space-y-4">
-        <input type="hidden" name="form_type" value="signup">
-        <div class="transform transition-all duration-300 hover:-translate-y-1">
-          <input type="text" name="name" placeholder="Full Name" required 
-            class="w-full p-4 rounded-xl border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
-        </div>
-        <div class="transform transition-all duration-300 hover:-translate-y-1">
-          <input type="email" name="email" placeholder="Email" required 
-            class="w-full p-4 rounded-xl border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
-        </div>
-        <div class="transform transition-all duration-300 hover:-translate-y-1">
-          <input type="password" name="password" placeholder="Password" required 
-            class="w-full p-4 rounded-xl border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
-        </div>
-        <div class="transform transition-all duration-300 hover:-translate-y-1">
-          <input type="password" name="confirm_password" placeholder="Confirm Password" required 
-            class="w-full p-4 rounded-xl border-2 border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:border-transparent transition-all duration-300 hover:shadow-md">
-        </div>
-        <button class="w-full bg-blue-600 text-white font-semibold py-4 px-6 rounded-xl hover:bg-blue-700 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95">
-          Sign Up
+
+    <!-- Right Interactive Auth Forms -->
+    <div class="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-center bg-slate-50/50">
+      
+      <!-- Tab Switcher -->
+      <div class="flex p-1 bg-slate-200/80 rounded-2xl mb-8 max-w-xs mx-auto w-full">
+        <button @click="tab = 'login'" 
+                :class="tab === 'login' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
+                class="flex-1 py-2 text-xs font-bold rounded-xl transition-all">
+          Sign In
         </button>
-      </form>
+        <button @click="tab = 'signup'" 
+                :class="tab === 'signup' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'"
+                class="flex-1 py-2 text-xs font-bold rounded-xl transition-all">
+          Create Account
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <div x-show="tab === 'login'" x-transition class="max-w-md mx-auto w-full">
+        <div class="mb-6 text-center sm:text-left">
+          <h3 class="text-2xl font-black text-slate-900 tracking-tight">Parent Login</h3>
+          <p class="text-xs text-slate-500 font-medium mt-1">Enter your credentials to access the safety console.</p>
+        </div>
+
+        <form method="POST" action="/" class="space-y-4">
+          <input type="hidden" name="form_type" value="login">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Parent Email</label>
+            <input type="email" name="email" placeholder="parent@example.com" required 
+                   class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password</label>
+            <input type="password" name="password" placeholder="••••••••" required 
+                   class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl text-sm shadow-md hover:shadow-lg transition-all active:scale-98">
+            Access Parent Dashboard →
+          </button>
+        </form>
+        
+        <p class="text-center text-xs text-slate-500 mt-6">
+          New to SafeNet? <button @click="tab = 'signup'" class="text-indigo-600 font-bold hover:underline">Create a parent profile</button>
+        </p>
+      </div>
+
+      <!-- Signup Form -->
+      <div x-show="tab === 'signup'" x-transition class="max-w-md mx-auto w-full" style="display: none;">
+        <div class="mb-6 text-center sm:text-left">
+          <h3 class="text-2xl font-black text-slate-900 tracking-tight">Create Parent Profile</h3>
+          <p class="text-xs text-slate-500 font-medium mt-1">Get started protecting your family's browsing in seconds.</p>
+        </div>
+
+        <form method="POST" action="/" class="space-y-4">
+          <input type="hidden" name="form_type" value="signup">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Parent Full Name</label>
+            <input type="text" name="name" placeholder="Alice Smith" required 
+                   class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Email Address</label>
+            <input type="email" name="email" placeholder="alice@example.com" required 
+                   class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Password</label>
+              <input type="password" name="password" placeholder="••••••••" required 
+                     class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Confirm</label>
+              <input type="password" name="confirm_password" placeholder="••••••••" required 
+                     class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white transition">
+            </div>
+          </div>
+          <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-6 rounded-xl text-sm shadow-md hover:shadow-lg transition-all active:scale-98">
+            Create Free Account →
+          </button>
+        </form>
+
+        <p class="text-center text-xs text-slate-500 mt-6">
+          Already registered? <button @click="tab = 'login'" class="text-indigo-600 font-bold hover:underline">Sign in instead</button>
+        </p>
+      </div>
+
     </div>
   </div>
-</div>
 
-<style>
-  @keyframes fade-in {
-    from { 
-      opacity: 0; 
-      transform: translateY(-20px); 
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0); 
-    }
-  }
-  
-  .animate-fade-in { 
-    animation: fade-in 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  input::placeholder {
-    color: #94a3b8;
-    opacity: 0.8;
-  }
-  
-  input:focus::placeholder {
-    opacity: 0.5;
-  }
-</style>
+</div>
 {% endblock %}

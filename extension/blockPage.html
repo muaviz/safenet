@@ -3,69 +3,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeNet - Access Restricted</title>
-    <link href="output.css" rel="stylesheet">
+    <title>Access Paused - SafeNet</title>
     <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+            --emerald: #10b981;
+            --emerald-light: #ecfdf5;
+            --rose: #f43f5e;
+            --rose-light: #fff1f2;
+            --amber: #f59e0b;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --slate-400: #94a3b8;
+            --slate-200: #e2e8f0;
+            --slate-100: #f1f5f9;
+            --slate-50: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 20%, #eef2ff 0%, #f8fafc 60%, #e2e8f0 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--slate-800);
+            padding: 24px 16px;
+        }
+
+        .block-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+            padding: 40px 32px 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(16px);
+            animation: cardAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(16px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Top decorative gradient bar */
+        .top-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #6366f1, #ec4899, #f43f5e, #eab308);
+        }
+
+        /* Shield Icon Halo */
+        .shield-wrapper {
+            position: relative;
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shield-halo {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(244, 63, 94, 0) 70%);
+            border-radius: 50%;
+            transform: scale(1.4);
+            animation: pulseHalo 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseHalo {
+            0%, 100% { transform: scale(1.3); opacity: 0.8; }
+            50% { transform: scale(1.6); opacity: 0.4; }
+        }
+
+        .shield-icon-box {
+            width: 68px;
+            height: 68px;
+            background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+            border: 1px solid #fecdd3;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.15);
+        }
+
+        .header-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: var(--rose-light);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            color: #be123c;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 12px;
+        }
+
+        .title {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--slate-900);
+            letter-spacing: -0.8px;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--slate-500);
+            margin-bottom: 24px;
+        }
+
+        /* Domain Display Pill */
+        .domain-badge {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .domain-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--slate-400);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .domain-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--rose);
+            word-break: break-all;
+        }
+
+        .domain-reason {
+            font-size: 12px;
+            color: var(--slate-500);
+            margin-top: 2px;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            border-left: 3px solid #cbd5e1;
+            padding: 6px 14px;
+            text-align: left;
+            margin-bottom: 28px;
+            background: rgba(248, 250, 252, 0.6);
+            border-radius: 0 10px 10px 0;
+        }
+
+        .quote-text {
+            font-size: 13px;
+            color: var(--slate-600);
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        .quote-author {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--slate-400);
+            margin-top: 4px;
+        }
+
+        /* Action Buttons */
+        .button-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-secondary {
+            background: var(--slate-100);
+            color: var(--slate-700);
+            border: 1px solid var(--slate-200);
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-200);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-hover) 0%, #4f46e5 100%);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Access Request Drawer */
+        .request-drawer {
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid var(--slate-200);
+            text-align: left;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .drawer-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--slate-800);
+            margin-bottom: 8px;
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--slate-100);
+            border: 1px solid var(--slate-200);
+            border-radius: 8px;
+            color: var(--slate-600);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .chip:hover, .chip.active {
+            background: var(--primary-light);
+            border-color: rgba(79, 70, 229, 0.4);
+            color: var(--primary);
+        }
+
+        .request-textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 13px;
+            font-family: inherit;
+            border: 1.5px solid var(--slate-200);
+            border-radius: 12px;
+            outline: none;
+            resize: vertical;
+            min-height: 70px;
+            margin-bottom: 12px;
+            color: var(--slate-800);
+            transition: border-color 0.2s ease;
+        }
+
+        .request-textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        .drawer-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 8px 14px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+        .success-banner {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: var(--emerald-light);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #065f46;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .footer-note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: var(--slate-400);
+            font-weight: 500;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .block-card { padding: 28px 20px 24px; }
+            .title { font-size: 22px; }
+            .button-group { flex-direction: column; }
         }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 text-center px-4 py-8">
-    
-    <div class="bg-white shadow-2xl rounded-3xl p-8 max-w-lg w-full transform transition-all border border-slate-100 relative overflow-hidden">
-        <!-- Accent top bar -->
-        <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-red-500 via-purple-500 to-indigo-500"></div>
+<body>
 
-        <div class="w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-inner text-3xl">
-            🛡️
+    <div class="block-card">
+        <div class="top-glow"></div>
+
+        <!-- Shield Icon with Ambient Halo -->
+        <div class="shield-wrapper">
+            <div class="shield-halo"></div>
+            <div class="shield-icon-box">🛡️</div>
         </div>
 
-        <h1 class="text-3xl font-extrabold text-slate-800 mb-2 tracking-tight">Website Blocked</h1>
-        
-        <p class="text-sm font-semibold text-slate-500 mb-4 uppercase tracking-wider">
-            SafeNet Protective Browsing
-        </p>
-
-        <div class="bg-slate-50 rounded-xl p-4 mb-6 border border-slate-200/80">
-            <span class="text-xs text-slate-400 font-medium block uppercase tracking-wider mb-1">Restricted Address</span>
-            <span id="blockedUrlDisplay" class="font-mono text-base font-semibold text-red-600 break-all">example.com</span>
-            <span id="blockReasonDisplay" class="text-xs text-slate-500 block mt-1 italic">Filtered by family safe browsing rules</span>
+        <div class="header-tag">
+            <span>●</span>
+            <span>SafeNet Active Shield</span>
         </div>
 
-        <p class="text-slate-600 text-sm mb-6 leading-relaxed">
-            "Discipline is choosing between what you want now and what you want most."  
-            <br><span class="text-slate-400 font-medium">— Abraham Lincoln</span>
-        </p>
+        <h1 class="title">Access Restricted</h1>
+        <p class="subtitle">This website is currently paused by family browsing policies.</p>
 
-        <!-- Actions -->
-        <div class="flex flex-col sm:flex-row gap-3 justify-center mb-4">
-            <button id="goBackBtn" class="w-full sm:w-1/2 py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition-all duration-200 active:scale-95 shadow-sm">
-                ← Go Back
+        <!-- Domain & Reason Details -->
+        <div class="domain-badge">
+            <span class="domain-label">Restricted URL</span>
+            <span id="blockedUrlDisplay" class="domain-text">example.com</span>
+            <span id="blockReasonDisplay" class="domain-reason">Restricted by family safety settings</span>
+        </div>
+
+        <!-- Inspiring Quote -->
+        <div class="quote-box">
+            <p class="quote-text" id="quoteText">"Discipline is choosing between what you want now and what you want most."</p>
+            <p class="quote-author" id="quoteAuthor">— Abraham Lincoln</p>
+        </div>
+
+        <!-- Primary Action Buttons -->
+        <div class="button-group">
+            <button id="goBackBtn" class="btn btn-secondary">
+                <span>← Return Safely</span>
             </button>
-            <button id="requestAccessBtn" class="w-full sm:w-1/2 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-all duration-200 active:scale-95 shadow-md hover:shadow-lg">
-                Request Access 🙋
+            <button id="requestAccessBtn" class="btn btn-primary">
+                <span>Request Permission 🙋</span>
             </button>
         </div>
 
-        <!-- Request Modal / Drawer (Initially hidden) -->
-        <div id="requestModal" class="hidden text-left mt-6 pt-6 border-t border-slate-200">
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Why do you need this site?</label>
-            <textarea id="requestReasonInput" rows="3" placeholder="e.g. I need this article for my science homework project..." class="w-full p-3 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none mb-3"></textarea>
-            <div class="flex justify-end gap-2">
-                <button id="cancelRequestBtn" class="px-3 py-2 text-xs font-semibold text-slate-500 hover:text-slate-700">Cancel</button>
-                <button id="submitRequestBtn" class="px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-all shadow">
-                    Send to Parent
-                </button>
+        <!-- Request Access Drawer -->
+        <div id="requestModal" class="request-drawer hidden">
+            <h4 class="drawer-title">Why do you need access to this website?</h4>
+            <div class="chip-group">
+                <button type="button" class="chip" data-chip="School project or homework assignment">📚 School & Homework</button>
+                <button type="button" class="chip" data-chip="Studying with classmates">👥 Study Group</button>
+                <button type="button" class="chip" data-chip="Educational research article">🔬 Research</button>
+                <button type="button" class="chip" data-chip="Personal leisure or hobby">🎮 Free Time</button>
+            </div>
+            <textarea id="requestReasonInput" class="request-textarea" placeholder="Explain why you need this website so your parent can review it..."></textarea>
+            
+            <div class="drawer-actions">
+                <button id="cancelRequestBtn" class="btn btn-secondary btn-sm">Cancel</button>
+                <button id="submitRequestBtn" class="btn btn-primary btn-sm">Send to Parent</button>
             </div>
         </div>
 
-        <div id="requestSuccessMsg" class="hidden mt-4 p-3 bg-green-50 text-green-700 text-xs font-semibold rounded-xl border border-green-200">
-            ✅ Request sent to your parent! Check back in a few minutes.
+        <div id="requestSuccessMsg" class="success-banner hidden">
+            <span>✅</span>
+            <span id="requestFeedbackText">Request sent to your parent! They will be notified on their dashboard.</span>
         </div>
     </div>
 
-    <p class="mt-6 text-xs text-slate-400 font-medium">SafeNet Parental Control • Keeping learning safe and distraction-free</p>
+    <p class="footer-note">SafeNet Protective Browsing • Keeping screen time purposeful</p>
 
     <script src="blockPage.js"></script>
 </body>

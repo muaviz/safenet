@@ -2,38 +2,50 @@
 {% block body %}
 <div class="w-full max-w-6xl mx-auto space-y-8" x-data="{ activeChildId: {{ current_child.id if current_child else 0 }}, showAddChildModal: false }">
 
-    <!-- Top Stats Banner & Pending Access Requests -->
+    <!-- Pending Access Requests Priority Banner -->
     {% if pending_requests %}
-    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-6 shadow-sm animate-pulse-slow">
-        <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center space-x-2">
-                <span class="text-xl">🙋</span>
-                <h3 class="text-base font-bold text-amber-900">Access Requests Pending Parent Approval</h3>
-            </div>
-            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-200 text-amber-800">{{ pending_requests|length }} New</span>
-        </div>
-        <div class="space-y-3">
-            {% for req in pending_requests %}
-            <div class="bg-white p-4 rounded-xl border border-amber-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="font-bold text-slate-800 text-sm">{{ req.child.name }}</span>
-                        <span class="text-xs text-slate-400">•</span>
-                        <span class="font-mono text-xs font-semibold text-indigo-600">{{ req.url }}</span>
-                    </div>
-                    <p class="text-xs text-slate-600 mt-1 italic">"{{ req.reason or 'No reason provided' }}"</p>
+    <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl shadow-inner">
+                    🙋
                 </div>
-                <div class="flex items-center space-x-2">
+                <div>
+                    <h3 class="text-base font-extrabold text-amber-950">Pending Child Access Requests</h3>
+                    <p class="text-xs text-amber-700/90 font-medium">Children have requested permission to visit restricted domains.</p>
+                </div>
+            </div>
+            <span class="text-xs font-bold px-3 py-1 rounded-full bg-amber-200/80 text-amber-900 border border-amber-300/50">
+                {{ pending_requests|length }} Awaiting Review
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for req in pending_requests %}
+            <div class="bg-white p-4 rounded-2xl border border-amber-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-bold text-slate-900 text-sm">{{ req.child.name }}</span>
+                        <span class="font-mono text-xs font-bold px-2 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-100">
+                            {{ req.url }}
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-600 italic bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-3">
+                        "{{ req.reason or 'No specific reason provided' }}"
+                    </p>
+                </div>
+
+                <div class="flex items-center justify-end space-x-2 pt-2 border-t border-slate-100">
                     <form method="POST" action="/requests/{{ req.id }}/resolve" class="inline">
-                        <input type="hidden" name="action" value="approve">
-                        <button type="submit" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition">
-                            Approve
+                        <input type="hidden" name="action" value="reject">
+                        <button type="submit" class="px-3.5 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-xl text-xs font-bold transition">
+                            Deny
                         </button>
                     </form>
                     <form method="POST" action="/requests/{{ req.id }}/resolve" class="inline">
-                        <input type="hidden" name="action" value="reject">
-                        <button type="submit" class="px-3 py-1.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 rounded-lg text-xs font-semibold transition">
-                            Deny
+                        <input type="hidden" name="action" value="approve">
+                        <button type="submit" class="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow transition">
+                            Approve Access
                         </button>
                     </form>
                 </div>
@@ -43,34 +55,39 @@
     </div>
     {% endif %}
 
-    <!-- Children Profiles Carousel / Selector -->
+    <!-- Family Overview Header -->
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-            <h2 class="text-2xl font-black text-slate-900 tracking-tight">Family Safety Center</h2>
-            <p class="text-xs sm:text-sm text-slate-500 font-medium">Monitor screen time, manage protective rules, and pair devices.</p>
+            <h2 class="text-3xl font-black text-slate-900 tracking-tight">Family Safety Center</h2>
+            <p class="text-sm text-slate-500 font-medium mt-0.5">Real-time screen time monitoring, device pairing, and active filtering.</p>
         </div>
-        <button @click="showAddChildModal = true" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center space-x-2">
+        <button @click="showAddChildModal = true" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-md hover:shadow-lg transition flex items-center space-x-2 active:scale-98">
             <span>+ Add Child Profile</span>
         </button>
     </div>
 
-    <!-- Child Profiles List -->
+    <!-- Children Profiles Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {% for child in children %}
-        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition flex flex-col justify-between"
-             :class="{ 'ring-2 ring-indigo-500': activeChildId === {{ child.id }} }">
+        <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+             :class="{ 'ring-2 ring-indigo-600 shadow-indigo-100/50': activeChildId === {{ child.id }} }">
             <div>
                 <!-- Card Header -->
                 <div class="flex justify-between items-start mb-4">
                     <div>
-                        <h3 class="text-lg font-bold text-slate-800">{{ child.name }}</h3>
+                        <div class="flex items-center space-x-2">
+                            <h3 class="text-lg font-black text-slate-900">{{ child.name }}</h3>
+                            {% if child.is_paired %}
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" title="Extension connected & active"></span>
+                            {% endif %}
+                        </div>
                         <div class="flex items-center space-x-2 mt-1">
-                            <span class="text-xs text-slate-400 font-medium">{{ child.age }} years old</span>
-                            <span class="text-xs px-2 py-0.5 rounded-full font-semibold uppercase tracking-wider
+                            <span class="text-xs text-slate-400 font-medium">{{ child.age }} yrs old</span>
+                            <span class="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider
                                   {% if child.safety_tier == 'strict' %} bg-rose-50 text-rose-700 border border-rose-100
                                   {% elif child.safety_tier == 'teen' %} bg-blue-50 text-blue-700 border border-blue-100
-                                  {% else %} bg-purple-50 text-purple-700 border border-purple-100 {% endif %}">
-                                {{ child.safety_tier }}
+                                  {% else %} bg-indigo-50 text-indigo-700 border border-indigo-100 {% endif %}">
+                                {{ child.safety_tier }} Mode
                             </span>
                         </div>
                     </div>
@@ -80,50 +97,72 @@
                         <svg class="transform -rotate-90 w-16 h-16" viewBox="0 0 36 36">
                             <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none"
                                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-                            <path class="text-indigo-600 transition-all duration-1000" stroke-width="3.5"
-                                  stroke-dasharray="{{ child.percentage }}, 100" stroke-linecap="round" stroke="currentColor" fill="none"
+                            <path class="{% if child.percentage > 90 %}text-rose-500{% elif child.percentage > 70 %}text-amber-500{% else %}text-indigo-600{% endif %} transition-all duration-1000"
+                                  stroke-width="3.5" stroke-dasharray="{{ child.percentage }}, 100" stroke-linecap="round" stroke="currentColor" fill="none"
                                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
                         </svg>
-                        <span class="absolute text-xs font-bold text-slate-800">{{ child.percentage }}%</span>
+                        <span class="absolute text-xs font-black text-slate-800">{{ child.percentage }}%</span>
                     </div>
                 </div>
 
-                <!-- Screen time details -->
-                <div class="bg-slate-50 rounded-2xl p-3 mb-4">
-                    <div class="flex justify-between text-xs mb-1">
-                        <span class="text-slate-500 font-medium">Daily Screen Time</span>
-                        <span class="font-bold text-slate-800">{{ child.total_minutes }}m / {{ child.daily_limit }}m</span>
+                <!-- Daily Limit Progress Meter -->
+                <div class="bg-slate-50 rounded-2xl p-3.5 mb-4 border border-slate-100">
+                    <div class="flex justify-between text-xs mb-1.5">
+                        <span class="text-slate-500 font-semibold">Today's Usage</span>
+                        <span class="font-bold text-slate-800">{{ child.total_minutes }}m <span class="text-slate-400 font-normal">/ {{ child.daily_limit }}m limit</span></span>
                     </div>
-                    <div class="w-full bg-slate-200 rounded-full h-1.5 overflow-hidden">
-                        <div class="bg-indigo-600 h-1.5 rounded-full" style="width: {{ child.percentage }}%"></div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="{% if child.percentage > 90 %}bg-rose-500{% elif child.percentage > 70 %}bg-amber-500{% else %}bg-indigo-600{% endif %} h-2 rounded-full transition-all duration-500"
+                             style="width: {{ child.percentage }}%"></div>
                     </div>
                 </div>
 
-                <!-- Activities -->
-                <div class="space-y-1.5 mb-4">
-                    <span class="text-xs text-slate-400 font-bold uppercase tracking-wider block">Today's Focus</span>
+                <!-- Top Categories Focus -->
+                <div class="space-y-2 mb-4">
+                    <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider block">Today's Focus</span>
                     {% if child.top_activities %}
                         {% for act in child.top_activities %}
                         <div class="flex justify-between text-xs">
-                            <span class="text-slate-600">{{ act.category }}</span>
-                            <span class="font-semibold text-slate-800">{{ act.minutes }}m</span>
+                            <span class="text-slate-600 font-medium">
+                                {% if 'Education' in act.category %}📚
+                                {% elif 'Gaming' in act.category %}🎮
+                                {% elif 'Social' in act.category %}💬
+                                {% elif 'Video' in act.category %}🎬
+                                {% else %}🌐{% endif %}
+                                {{ act.category }}
+                            </span>
+                            <span class="font-bold text-slate-800">{{ act.minutes }} min</span>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p class="text-xs text-slate-400 italic">No activity logged yet today.</p>
+                        <p class="text-xs text-slate-400 italic">No web browsing recorded today.</p>
                     {% endif %}
                 </div>
+
+                <!-- Active Pairing PIN Display (if active) -->
+                {% if child.active_code %}
+                <div class="mb-4 p-3 bg-indigo-50 border border-indigo-200/70 rounded-2xl flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] uppercase font-extrabold text-indigo-500 tracking-wider block">Pairing PIN (15m)</span>
+                        <span class="font-mono text-base font-black text-indigo-900 tracking-widest">{{ child.active_code }}</span>
+                    </div>
+                    <span class="text-[11px] text-indigo-600 font-semibold">Enter in Extension</span>
+                </div>
+                {% endif %}
             </div>
 
-            <!-- Pairing & Actions -->
+            <!-- Card Bottom Actions -->
             <div class="pt-4 border-t border-slate-100 flex items-center justify-between">
                 <form method="POST" action="/children/{{ child.id }}/pair-code" class="inline">
-                    <button type="submit" class="text-xs font-bold text-indigo-600 hover:text-indigo-800">
-                        📱 Generate Pair Code
+                    <button type="submit" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center space-x-1">
+                        <span>📱</span>
+                        <span>Get Pairing PIN</span>
                     </button>
                 </form>
-                <button @click="activeChildId = {{ child.id }}" class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700">
-                    Manage Rules →
+                <button @click="activeChildId = {{ child.id }}"
+                        :class="activeChildId === {{ child.id }} ? 'bg-indigo-600 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'"
+                        class="text-xs font-bold px-3 py-1.5 rounded-xl transition">
+                    Selected Profile ✓
                 </button>
             </div>
         </div>
@@ -132,64 +171,69 @@
 
     <!-- Rule Management & Quick Blocker Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4">
-        <!-- Add Blocked Site Form -->
+        <!-- Add Website Form -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
             <div class="flex items-center space-x-3 mb-4">
-                <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-xl">
                     🔒
                 </div>
                 <div>
-                    <h3 class="text-lg font-bold text-slate-800">Block Websites</h3>
-                    <p class="text-xs text-slate-500">Prevent distractions or inappropriate content.</p>
+                    <h3 class="text-lg font-black text-slate-900">Custom Domain Rules</h3>
+                    <p class="text-xs text-slate-500">Add domains to restrict for the selected profile.</p>
                 </div>
             </div>
 
             <form id="blockForm" method="POST" action="/children/{{ current_child.id if current_child else 1 }}/rules" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Target Domain or URL</label>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Target Website Domain</label>
                     <input type="text" name="url" placeholder="e.g. reddit.com or youtube.com" required
-                           class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-sm transition">
+                           class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-none text-sm bg-white transition">
                 </div>
-                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-xl text-sm transition shadow-sm hover:shadow-md">
-                    + Add to Blocklist
+                <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-sm hover:shadow-md active:scale-98">
+                    + Restrict This Website
                 </button>
             </form>
 
-            <p class="text-xs text-slate-400 mt-3">
-                * Domains are normalized automatically and instantly enforced in connected extensions.
-            </p>
+            <div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-slate-500 space-y-1">
+                <p class="font-semibold text-slate-700">⚡ Instant Sync</p>
+                <p>Rules compile into Chrome's native DeclarativeNetRequest engine in sub-milliseconds.</p>
+            </div>
         </div>
 
-        <!-- Current Blocked Sites List -->
+        <!-- Active Blocklist -->
         <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold">
+                        <div class="w-10 h-10 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xl">
                             🚫
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-slate-800">Active Blocklist</h3>
+                            <h3 class="text-lg font-black text-slate-900">Active Blocklist</h3>
                             <p class="text-xs text-slate-500">{{ blocked_sites|length }} domains restricted</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="max-h-64 overflow-y-auto space-y-2 pr-1">
+                <div class="max-h-72 overflow-y-auto space-y-2 pr-1">
                     {% if blocked_sites %}
                         {% for site in blocked_sites %}
-                        <div class="flex items-center justify-between p-3 rounded-xl bg-slate-50 hover:bg-slate-100 transition border border-slate-100 text-xs">
-                            <span class="font-mono font-semibold text-slate-700">{{ site.url }}</span>
+                        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 transition border border-slate-100 text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-slate-400">🛡️</span>
+                                <span class="font-mono font-bold text-slate-800">{{ site.url }}</span>
+                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-200/70 text-slate-600 font-semibold uppercase">{{ site.category or 'Custom' }}</span>
+                            </div>
                             <form method="POST" action="/children/{{ current_child.id if current_child else 1 }}/delete-rule" class="inline">
                                 <input type="hidden" name="url" value="{{ site.url }}">
-                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-bold px-2 py-1 transition">
-                                    Remove
+                                <button type="submit" class="text-slate-400 hover:text-rose-600 font-bold px-2 py-1 rounded-lg hover:bg-rose-50 transition">
+                                    Delete
                                 </button>
                             </form>
                         </div>
                         {% endfor %}
                     {% else %}
-                        <p class="text-xs text-slate-400 italic py-6 text-center">No blocked websites yet. Enter a website on the left to restrict access.</p>
+                        <p class="text-xs text-slate-400 italic py-8 text-center">No blocked websites yet. Use the form on the left to add rules.</p>
                     {% endif %}
                 </div>
             </div>
@@ -199,36 +243,36 @@
     <!-- Add Child Modal -->
     <div x-show="showAddChildModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4" style="display: none;">
         <div @click.outside="showAddChildModal = false" class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100">
-            <h3 class="text-xl font-bold text-slate-800 mb-2">Create Child Profile</h3>
-            <p class="text-xs text-slate-500 mb-6">Configure custom protection tiers and daily screen time limits.</p>
+            <h3 class="text-2xl font-black text-slate-900 mb-1">Create Child Profile</h3>
+            <p class="text-xs text-slate-500 mb-6">Customize age-tiered filters and daily screen limits.</p>
 
             <form method="POST" action="/add-child" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Child Name</label>
-                    <input type="text" name="name" placeholder="e.g. Maya" required class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Child's Name</label>
+                    <input type="text" name="name" placeholder="e.g. Maya" required class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Age</label>
-                        <input type="number" name="age" value="10" min="3" max="18" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Age</label>
+                        <input type="number" name="age" value="10" min="3" max="18" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Daily Limit (mins)</label>
-                        <input type="number" name="daily_limit" value="120" min="15" step="15" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Daily Limit (mins)</label>
+                        <input type="number" name="daily_limit" value="120" min="15" step="15" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Safety Tier</label>
-                    <select name="safety_tier" class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Safety Tier</label>
+                    <select name="safety_tier" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
                         <option value="strict">Strict (Walled Garden - Under 8)</option>
                         <option value="moderate" selected>Moderate (Filters Adult, Gambling, Social - 8 to 12)</option>
                         <option value="teen">Teen (Filters Malware, Phishing & Explicit - 13+)</option>
                     </select>
                 </div>
 
-                <div class="flex justify-end space-x-3 pt-4 border-t border-slate-100">
-                    <button type="button" @click="showAddChildModal = false" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800">Cancel</button>
-                    <button type="submit" class="px-5 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow">Create Profile</button>
+                <div class="flex justify-end space-x-3 pt-6 border-t border-slate-100">
+                    <button type="button" @click="showAddChildModal = false" class="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-800">Cancel</button>
+                    <button type="submit" class="px-6 py-2.5 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-md">Create Profile</button>
                 </div>
             </form>
         </div>

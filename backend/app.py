@@ -226,8 +226,19 @@ def dashboard():
             reverse=True
         )[:3]
 
-        # Active pairing code (if any)
+        # Active pairing code / status
         active_device = Device.query.filter_by(child_id=child.id, is_active=True).first()
+        active_code = None
+        is_paired = False
+        if active_device:
+            now = datetime.now(timezone.utc)
+            exp = active_device.code_expires_at
+            if exp and exp.tzinfo is None:
+                exp = exp.replace(tzinfo=timezone.utc)
+            if active_device.pairing_code and exp and exp > now:
+                active_code = active_device.pairing_code
+            if active_device.last_heartbeat and not active_device.pairing_code:
+                is_paired = True
 
         child_stats.append({
             "id": child.id,
@@ -238,7 +249,9 @@ def dashboard():
             "daily_limit": daily_limit,
             "percentage": percent,
             "top_activities": top_activities,
-            "device": active_device
+            "device": active_device,
+            "active_code": active_code,
+            "is_paired": is_paired
         })
 
     # Fetch blocked sites

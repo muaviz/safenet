@@ -3,55 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeNet Status</title>
+    <title>SafeNet Guard</title>
     <link rel="stylesheet" href="popup.css">
 </head>
 <body>
-    <div class="popup-container">
-        <!-- Header -->
-        <div class="header">
+    <div class="popup-wrapper">
+        <!-- Brand Header -->
+        <header class="app-header">
             <div class="brand">
-                <span class="shield-icon">🛡️</span>
-                <span class="brand-name">SafeNet</span>
+                <div class="shield-badge">
+                    <svg class="shield-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shieldGrad)"/>
+                        <path d="M9 12l2 2 4-4" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="shieldGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#4f46e5"/>
+                                <stop offset="1" stop-color="#7c3aed"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">SafeNet</span>
+                    <span class="brand-subtitle">AI Protection Active</span>
+                </div>
             </div>
-            <span id="statusBadge" class="status-badge active">Active</span>
+            
+            <div id="liveBadge" class="status-pill status-active">
+                <span class="status-dot"></span>
+                <span id="liveBadgeText">Protected</span>
+            </div>
+        </header>
+
+        <!-- Profile & Status Card -->
+        <div class="glass-card main-card">
+            <div class="profile-header">
+                <div class="avatar-circle" id="profileAvatar">👶</div>
+                <div class="profile-info">
+                    <h3 id="childName" class="profile-name">Standard Protection</h3>
+                    <div class="profile-meta">
+                        <span id="tierBadge" class="tier-tag">Moderate Mode</span>
+                        <span class="bullet">•</span>
+                        <span id="deviceStatus" class="meta-label">Device Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-value" id="rulesCount">0</span>
+                    <span class="stat-label">Blocked Sites</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-value text-emerald" id="protectionLevel">100%</span>
+                    <span class="stat-label">AI Shield</span>
+                </div>
+            </div>
+
+            <div class="sync-row">
+                <span class="sync-label">Last Policy Sync</span>
+                <span id="lastSynced" class="sync-time">Just now</span>
+            </div>
         </div>
 
-        <!-- Child Profile Info or Unpaired Notice -->
-        <div id="profileSection" class="card">
-            <div class="card-row">
-                <span class="label">Profile</span>
-                <span id="childName" class="value">Standard Protection</span>
+        <!-- Pairing Section Drawer -->
+        <div id="pairingSection" class="glass-card pairing-card hidden">
+            <div class="pairing-header">
+                <span class="pairing-icon">🔗</span>
+                <div>
+                    <h4 class="pairing-title">Link Child Profile</h4>
+                    <p class="pairing-desc">Enter the 6-digit PIN from your parent dashboard:</p>
+                </div>
             </div>
-            <div class="card-row">
-                <span class="label">Active Rules</span>
-                <span id="rulesCount" class="value">0 sites</span>
+
+            <div class="pin-input-wrap">
+                <input type="text" id="pairCodeInput" maxlength="6" placeholder="000000" autocomplete="off" spellcheck="false" class="pin-field">
+                <button id="pairBtn" class="btn btn-connect">Pair</button>
             </div>
-            <div class="card-row">
-                <span class="label">Last Synced</span>
-                <span id="lastSynced" class="value text-muted">Never</span>
-            </div>
+            <p id="pairFeedback" class="feedback-msg"></p>
         </div>
 
-        <!-- Pairing Section (Shown if not paired) -->
-        <div id="pairingSection" class="card hidden">
-            <p class="pairing-title">Pair with Parent Dashboard</p>
-            <p class="pairing-subtitle">Enter the 6-digit code from your parent's dashboard:</p>
-            <div class="pair-input-group">
-                <input type="text" id="pairCodeInput" maxlength="6" placeholder="123456" class="pair-input">
-                <button id="pairBtn" class="btn btn-secondary">Connect</button>
-            </div>
-            <p id="pairFeedback" class="feedback-text"></p>
-        </div>
-
-        <!-- Action Button -->
-        <div class="actions">
+        <!-- Primary Action Controls -->
+        <div class="action-stack">
             <button id="refreshBtn" class="btn btn-primary">
-                🔄 Sync Rules Now
+                <span class="btn-icon" id="syncSpinner">🔄</span>
+                <span id="syncBtnText">Sync Policies Now</span>
             </button>
+
+            <div class="sub-actions">
+                <button id="openDashboardBtn" class="sub-btn">
+                    <span>Parent Dashboard ↗</span>
+                </button>
+                <button id="togglePairingBtn" class="sub-btn text-muted">
+                    <span>Re-pair Device</span>
+                </button>
+            </div>
         </div>
 
-        <div id="syncFeedback" class="sync-feedback"></div>
+        <!-- Toast Feedback -->
+        <div id="syncFeedback" class="toast-feedback"></div>
     </div>
 
     <script src="popup.js"></script>
