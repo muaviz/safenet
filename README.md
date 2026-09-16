@@ -79,16 +79,29 @@ $ git clone https://github.com/deadpoet11/safenet
 # Go into the repository
 $ cd safenet
 
+# Create and activate virtual environment
+$ python3 -m venv .venv
+$ source .venv/bin/activate
+
 # Install dependencies
 $ pip install -r requirements.txt
 
 # Run the application
-$ python app.py
+$ python backend/app.py
 ```
 
-> **Note**
-> If you're using Linux Bash for Windows, [see this guide](https://www.howtogeek.com/261575/how-to-run-graphical-linux-desktop-applications-from-windows-10s-bash-shell/) or use `node` from the command prompt.
+### Loading the Chrome Extension
 
+1. Open Chrome, Brave, or Edge and go to `chrome://extensions/`.
+2. Enable **Developer mode** toggle in the top-right corner.
+3. Click **Load unpacked** and select the `extension` folder from this repository.
+4. Click the SafeNet extension icon in your toolbar to view status, sync rules, or pair with a 6-digit code from the parental dashboard.
+
+### Running Tests
+
+```bash
+$ pytest tests/test_safenet.py
+```
 
 ## Download
 
